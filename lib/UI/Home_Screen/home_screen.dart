@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildEmployeeList(List<Employee> employees, {required bool isCurrent}) {
-    return ListView.builder(
+    return ListView.separated(
       shrinkWrap: true,
       itemCount: employees.length,
       itemBuilder: (context, index) {
@@ -107,7 +107,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 item: item,
                 delete: () => _deleteEmployee(context, item),
               );
-      },
+      }, separatorBuilder: (BuildContext context, int index) {
+        return Divider(
+          color: Colors.grey.shade100,
+          thickness: 0.1.h,
+          height: 0.1.h,
+        );
+    },
     );
   }
 
