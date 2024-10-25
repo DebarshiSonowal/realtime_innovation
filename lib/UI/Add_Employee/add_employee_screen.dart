@@ -124,6 +124,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
       height: 5.h,
       padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.2.h),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(Assets.bagImage),
           SizedBox(width: 4.w),
@@ -139,9 +140,10 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   }
 
   Widget buildDesignationText() {
-    return SizedBox(
+    return Container(
       width: 70.w,
       height: double.infinity,
+      alignment: Alignment.centerLeft,
       child: Text(
         selectedDesignation.isEmpty ? "Role Selected" : selectedDesignation,
         style: TextStyle(
