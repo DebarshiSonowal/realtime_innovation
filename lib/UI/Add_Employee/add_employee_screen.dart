@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import '../../Constants/assets.dart';
 import '../../Constants/constants.dart';
 import '../../Constants/route_names.dart';
+import '../../Helper/database_helper_common.dart';
 import '../../Model/employee.dart';
 import '../../Navigation/navigate.dart';
 import '../../bloc/cubit.dart';
@@ -264,12 +265,14 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
     return buildButton("Save", () {
       if (employeeName.text.isNotEmpty && selectedDesignation.isNotEmpty) {
         context.read<DataCubit>().addEmployee(Employee(
-              employeeName.text,
-              selectedDesignation,
-              DateFormat("dd MMM yyyy").format(from),
-              to == null ? null : DateFormat("dd MMM yyyy").format(to!),
+              name: employeeName.text,
+              jobTitle: selectedDesignation,
+              fromDate: DateFormat("dd MMM yyyy").format(from),
+              toDate: to == null ? null : DateFormat("dd MMM yyyy").format(to!),
+              id: DateTime.now().microsecondsSinceEpoch,
             ));
-        debugPrint("name:${employeeName.text}   designation${selectedDesignation}   from:${DateFormat("dd MMM yyyy").format(from)}    to ${to == null ? null : DateFormat("dd MMM yyyy").format(to!)}");
+        debugPrint(
+            "name:${employeeName.text}   designation${selectedDesignation}   from:${DateFormat("dd MMM yyyy").format(from)}    to ${to == null ? null : DateFormat("dd MMM yyyy").format(to!)}");
         Navigation.instance.navigateAndRemoveUntil(Routes.mainScreen);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

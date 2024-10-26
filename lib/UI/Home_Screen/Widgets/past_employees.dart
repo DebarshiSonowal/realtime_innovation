@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../Constants/route_names.dart';
+import '../../../Helper/database_helper_common.dart';
 import '../../../Model/employee.dart';
 import '../../../Navigation/navigate.dart';
 import '../../../bloc/cubit.dart';
@@ -75,7 +76,7 @@ class PastEmployeesItem extends StatelessWidget {
                 height: 0.2.h,
               ),
               Text(
-                "${item.from} - ${item.to}",
+                "${item.fromDate} - ${item.toDate}",
                 style: TextStyle(
                   color: Colors.black38,
                   fontSize: 13.sp,

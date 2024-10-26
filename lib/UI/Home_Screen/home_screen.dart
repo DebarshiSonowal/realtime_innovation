@@ -6,6 +6,7 @@ import 'package:sizer/sizer.dart';
 import '../../Constants/assets.dart';
 import '../../Constants/constants.dart';
 import '../../Constants/route_names.dart';
+import '../../Helper/database_helper_common.dart';
 import '../../Model/employee.dart';
 import '../../Navigation/navigate.dart';
 import '../../bloc/cubit.dart';
@@ -68,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  
+
   Widget _buildEmptyImage() {
     return Center(child: Image.asset(Assets.noImages));
   }
@@ -118,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _deleteEmployee(BuildContext context, Employee item) {
-    context.read<DataCubit>().delete(item);
+    context.read<DataCubit>().deleteEmployee(item);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
@@ -135,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 (Navigation.instance.navigatorKey.currentContext ?? context)
                     .read<DataCubit>()
-                    .undo();
+                    .undoDelete();
                 ScaffoldMessenger.of(Navigation.instance.navigatorKey.currentContext ?? context).clearSnackBars();
               },
               child: Text(
@@ -175,8 +176,8 @@ class _HomeScreenState extends State<HomeScreen> {
       DateTime? toDate;
 
       // Attempt to parse the 'to' date
-      if (e.to != null) {
-        toDate = DateFormat('dd MMM yyyy').parse(e.to!); // Ensure the date format is correct
+      if (e.toDate != null) {
+        toDate = DateFormat('dd MMM yyyy').parse(e.toDate!); // Ensure the date format is correct
       }
 
       // Debug output to see employee data and filtering conditions

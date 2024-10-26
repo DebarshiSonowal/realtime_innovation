@@ -7,6 +7,7 @@ import 'package:sizer/sizer.dart';
 import '../../Constants/assets.dart';
 import '../../Constants/constants.dart';
 import '../../Constants/route_names.dart';
+import '../../Helper/database_helper_common.dart';
 import '../../Model/employee.dart';
 import '../../Navigation/navigate.dart';
 import '../../bloc/cubit.dart';
@@ -31,6 +32,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   DateTime from = DateTime.now();
   DateTime? to;
   Employee? deleted;
+  int? id;
 
   @override
   void initState() {
@@ -41,10 +43,11 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
         selectedDesignation =
             context.read<DataCubit>().state[widget.index].jobTitle;
         from = DateFormat("dd MMM yyyy")
-            .parse(context.read<DataCubit>().state[widget.index].from);
-        if (context.read<DataCubit>().state[widget.index].to != null) {
+            .parse(context.read<DataCubit>().state[widget.index].fromDate);
+        id = context.read<DataCubit>().state[widget.index].id;
+        if (context.read<DataCubit>().state[widget.index].toDate != null) {
           to = DateFormat("dd MMM yyyy")
-              .parse(context.read<DataCubit>().state[widget.index].to!);
+              .parse(context.read<DataCubit>().state[widget.index].toDate!);
         }
         // debugPrint("${selectedDesignation} \n ${context.read<DataCubit>().state[widget.index].jobTitle}");
       });
@@ -66,9 +69,13 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
         actions: [
           GestureDetector(
             onTap: () {
-              deleted = context
-                  .read<DataCubit>()
-                  .delete(context.read<DataCubit>().state[widget.index]);
+              deleted = Employee(
+                  name: employeeName.text,
+                  jobTitle: selectedDesignation,
+                  fromDate: DateFormat("dd MMM yyyy").format(from),
+                  toDate: to == null ? null : DateFormat("dd MMM yyyy").format(to!),
+                  id: id!);
+              context.read<DataCubit>().deleteEmployee(deleted!);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Row(
@@ -85,7 +92,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                         onTap: () {
                           Navigation.instance.navigatorKey.currentContext
                               ?.read<DataCubit>()
-                              .undo();
+                              .undoDelete();
                           ScaffoldMessenger.of(Navigation
                                   .instance.navigatorKey.currentContext!)
                               .clearSnackBars();
@@ -499,15 +506,15 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                       onPressed: () {
                         if (employeeName.text.isNotEmpty &&
                             selectedDesignation != "") {
-                          context.read<DataCubit>().editEmployee(
-                                widget.index,
+                          context.read<DataCubit>().updateEmployee(
                                 Employee(
-                                  employeeName.text,
-                                  selectedDesignation,
-                                  DateFormat("dd MMM yyyy").format(from),
-                                  to == null
+                                  name:employeeName.text,
+                                  jobTitle: selectedDesignation,
+                                  fromDate: DateFormat("dd MMM yyyy").format(from),
+                                  toDate:to == null
                                       ? null
                                       : DateFormat("dd MMM yyyy").format(to!),
+                                  id: id!,
                                 ),
                               );
                           Navigation.instance

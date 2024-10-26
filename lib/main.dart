@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:realtime_innovation/bloc/web_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 import 'Constants/constants.dart';
@@ -18,8 +19,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
-      return BlocProvider(
-        create: (_) => DataCubit(),
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider<DataCubit>(
+            create: (BuildContext context) => DataCubit(),
+          ),
+          BlocProvider<WebDataCubit>(
+            create: (BuildContext context) => WebDataCubit(),
+          ),
+        ],
         child: MaterialApp(
           title: 'Interview',
           theme: ThemeData(
